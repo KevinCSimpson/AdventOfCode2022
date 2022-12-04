@@ -3,16 +3,15 @@ from base_solver import BaseSolver
 class Day1Solver(BaseSolver):
 
     def puzzle1(self) -> str:
-        return ''
+        calorieTotals = self.get_elf_calories_sorted(self.get_raw_input('\n\n'))
+        return str(calorieTotals[0])
 
     def puzzle2(self) -> str:
-        elves = self.get_raw_input('\n\n')
-        calorieTotals = []
-        for elf in elves:
-            calorieTotal = 0
-            snacks = elf.split('\n')
-            for snack in snacks:
-                calorieTotal = calorieTotal + int(snack)
-            calorieTotals.append(calorieTotal)
-        calorieTotals.sort(reverse = True)
-        return str(calorieTotals[0] + calorieTotals[1] + calorieTotals[2])
+        calorieTotals = self.get_elf_calories_sorted(self.get_raw_input('\n\n'))
+        return str(sum(calorieTotals[:3]))
+
+    def get_elf_calories_sorted(self, elves: iter) -> iter:
+        return sorted([self.sum_calories(elf.split('\n')) for elf in elves], reverse=True)
+    
+    def sum_calories(self, snacks: iter) -> int:
+        return sum([int(x) for x in snacks])

@@ -1,56 +1,39 @@
-from outcome import Outcome
-from shape import Shape
-from round import Round
+from base_solver import BaseSolver
+from day02.outcome import Outcome
+from day02.shape import Shape
+from day02.round import Round
 
 
-def build_round(opponent_shape: Shape, desired_outcome: Outcome) -> Round:
-    match desired_outcome:
-        case Outcome.DRAW:
-            my_shape = opponent_shape
-        case Outcome.WIN:
-            match opponent_shape:
-                case Shape.ROCK:
-                    my_shape = Shape.PAPER
-                case Shape.PAPER:
-                    my_shape = Shape.SCISSORS
-                case Shape.SCISSORS:
-                    my_shape = Shape.ROCK
-        case Outcome.LOSE:
-            match opponent_shape:
-                case Shape.ROCK:
-                    my_shape = Shape.SCISSORS
-                case Shape.PAPER:
-                    my_shape = Shape.ROCK
-                case Shape.SCISSORS:
-                    my_shape = Shape.PAPER
+class Day2Solver(BaseSolver):
 
-    return Round(opponent_shape, my_shape)
+    def puzzle1(self) -> str:
+        opponent_shape_dict = {
+            'A': Shape.ROCK,
+            'B': Shape.PAPER,
+            'C': Shape.SCISSORS
+        }
+        my_shape_dict = {
+            'X': Shape.ROCK,
+            'Y': Shape.PAPER,
+            'Z': Shape.SCISSORS
+        }
+        
+        rounds_raw = [x.split(' ') for x in self.get_raw_input()]
+        rounds = [Round(opponent_shape=opponent_shape_dict[x[0]], my_shape=my_shape_dict[x[1]]) for x in rounds_raw]
+        return str(sum([x.score() for x in rounds]))
 
-
-with open('day02\input.txt','r') as reader:
-    raw = reader.read()
-rounds_raw = raw.split('\n')
-total_score = 0
-for round_raw in rounds_raw:
-    round_shapes_raw = round_raw.split(' ')
-    match round_shapes_raw[0]:
-        case 'A':
-            opponent_shape = Shape.ROCK
-        case 'B':
-            opponent_shape = Shape.PAPER
-        case 'C':
-            opponent_shape = Shape.SCISSORS
-    
-    match round_shapes_raw[1]:
-        case 'X':
-            desired_outcome = Outcome.LOSE
-        case 'Y':
-            desired_outcome = Outcome.DRAW
-        case 'Z':
-            desired_outcome = Outcome.WIN
-    
-    round = build_round(opponent_shape, desired_outcome)
-    total_score += round.score()
-print(total_score)
-
-
+    def puzzle2(self) -> str:
+        opponent_shape_dict = {
+            'A': Shape.ROCK,
+            'B': Shape.PAPER,
+            'C': Shape.SCISSORS
+        }
+        outcome_dict = {
+            'X': Outcome.LOSE,
+            'Y': Outcome.DRAW,
+            'Z': Outcome.WIN
+        }
+        
+        rounds_raw = [x.split(' ') for x in self.get_raw_input()]
+        rounds = [Round(opponent_shape=opponent_shape_dict[x[0]], outcome=outcome_dict[x[1]]) for x in rounds_raw]
+        return str(sum([x.score() for x in rounds]))

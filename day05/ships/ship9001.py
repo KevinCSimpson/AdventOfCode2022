@@ -1,0 +1,15 @@
+from day05.move import Move
+from day05.ships.ship import Ship
+
+
+class Ship9001(Ship):
+
+    def apply_move(self, move: Move) -> None:
+        self._pick_up(move.start, move.count)
+        self._drop(move.end)
+    
+    def _pick_up(self, stack: str, count: int = 1) -> None:
+        if self._crane is not None:
+            raise RuntimeError('Crane is already holding crates.')
+        self._crane = self._stacks[stack][-1 * count:]
+        del self._stacks[stack][-1 * count:]

@@ -6,9 +6,10 @@ from day05.solver import Day5Solver
 from day06.solver import Day6Solver
 from day07.solver import Day7Solver
 from day08.solver import Day8Solver
+from day09.solver import Day9Solver
 
 
-solver = Day8Solver('day08/input.txt')
+solver = Day9Solver('day09/input.txt')
 
 print('puzzle 1: ' + solver.puzzle1())
 print('puzzle 2: ' + solver.puzzle2())
